@@ -117,3 +117,34 @@ Exibir estatísticas:
 ``` Powershell
 curl http://localhost:8080/stats | jq
 ```
+
+## Comportamento
+
+Ao realizar o teste do Load Balancer no cenário do Power of Two Choices, a execução seguiu conforme o esperado. Os servidores mais lentros (latência maior) processaram uma quantidade menor de requisições, enquanto os servidores mais rápidos (latência menor) processaram uma quantidade maior de requisições.
+
+``` json
+{
+  "backends": [
+    {
+      "url": "http://localhost:8081",
+      "alive": true,
+      "connections": 0,
+      "requests": 1279
+    },
+    {
+      "url": "http://localhost:8082",
+      "alive": true,
+      "connections": 0,
+      "requests": 495
+    },
+    {
+      "url": "http://localhost:8083",
+      "alive": true,
+      "connections": 0,
+      "requests": 226
+    }
+  ]
+}
+```
+
+Isso é um fenômeno natural do Power of Two Choices. Ao escolher dois servidores aleatórios, ele envia a requisição para o com a menor quantidade de requisições naquele momento. Naturalmente, o servidor mais rápido frequentemente terá uma quantidade de conexões menor que o servidor mais lento.
