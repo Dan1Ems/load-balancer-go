@@ -1,6 +1,6 @@
 FROM golang:1.21-alpine AS builder
 WORKDIR /app
-COPY backend.go .
+COPY backend/backend.go .
 RUN go build -o backend backend.go
 
 FROM alpine:latest

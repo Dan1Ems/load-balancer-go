@@ -28,11 +28,6 @@ type ServerPool struct {
 	mu       sync.RWMutex // para proteger a lista durante atualizações (se adicionar/remover)
 }
 
-// Inicializa o gerador de números aleatórios
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 // ChooseBackend implementa Power of Two Choices
 func (s *ServerPool) ChooseBackend() *Backend {
 	s.mu.RLock()
@@ -91,10 +86,6 @@ func lbHandler(pool *ServerPool, w http.ResponseWriter, r *http.Request) {
 
 	// Garante que ao final da requisição (ou se houver panic) decrementamos
 	defer atomic.AddInt32(&backend.Connections, -1)
-
-	// Log opcional para ver qual backend foi escolhido
-	log.Printf("Requisição encaminhada para %s (conexões ativas: %d)",
-		backend.URL.Host, atomic.LoadInt32(&backend.Connections))
 
 	// Encaminha a requisição
 	backend.ReverseProxy.ServeHTTP(w, r)
