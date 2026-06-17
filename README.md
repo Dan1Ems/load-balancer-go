@@ -1,5 +1,7 @@
 # Load Balancer
 
+Explicação do código: [EXPLICACAO.md](EXPLICACAO.md)
+
 ## Estrutura
 
 ``` bash
@@ -8,6 +10,7 @@
 │   └── backend.go
 ├── docker-compose.yml
 ├── Dockerfile
+├── EXPLICACAO.md
 ├── main.go
 └── README.md
 ```
